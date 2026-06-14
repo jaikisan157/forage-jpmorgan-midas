@@ -171,10 +171,22 @@ Looking at the console output of the test run, the first four transactions proce
 
 ---
 
-## 🔲 Task 3 — REST API & Balance Querying
-### Status: NOT STARTED
+## ✅ Task 3 — Database Integration & Transaction Validation
+### Status: COMPLETE ✅
 
-**Goal:** Expose a REST endpoint to query user account balances from the database.
+**Goal:** Integrate Midas Core with H2 DB, validate incoming transactions, persist valid transaction records, and adjust sender/recipient user balances.
+
+### 🔧 What We Did
+- Created `TransactionRecord.java` JPA entity with `@ManyToOne` relationships to `UserRecord` for sender and recipient.
+- Created `TransactionRepository.java` interface extending `CrudRepository`.
+- Updated `DatabaseConduit.java` to support retrieving users by ID and persisting transaction records.
+- Updated `TransactionConsumer.java` listener to validate transactions (checks sender and recipient existence, and sender balance), update user balances, and persist the transaction inside a transaction context (`@Transactional`).
+- Verified implementation with `TaskThreeTests` using embedded Kafka.
+
+### 📊 Verification Results (Waldorf Balance)
+Waldorf's balance after processing all transactions:
+- **Actual:** `627.86`
+- **Submission (Rounded Down):** **`627`**
 
 ---
 
