@@ -152,12 +152,22 @@ Tests run: 1, Failures: 0, Errors: 0
 > **"Why H2 for testing?"**  
 > H2 is an in-memory database that spins up and tears down with each test run — no external DB needed. Real environments use PostgreSQL/Oracle, but H2 makes tests fast and self-contained.
 
----
+## ✅ Task 2 — Kafka Consumer Integration
+### Status: COMPLETE ✅
 
-## 🔲 Task 2 — Kafka Consumer Integration
-### Status: NOT STARTED
+**Goal:** Listen to transactions from the Kafka topic and deserialize them into `Transaction` objects.
 
-**Goal:** Listen to transactions from the Kafka topic and process/store them in the H2 database.
+### 🔧 What We Did
+- Created `TransactionConsumer.java` in `com.jpmc.midascore.component`.
+- Used `@KafkaListener(topics = "${general.kafka-topic}")` to dynamically consume from the configured topic (`trader-updates`).
+- Verified implementation with `TaskTwoTests` using embedded Kafka.
+
+### 📊 Verification Results (First 4 Transactions)
+Looking at the console output of the test run, the first four transactions processed were:
+1. **122.86**
+2. **42.87**
+3. **161.79**
+4. **22.22**
 
 ---
 
