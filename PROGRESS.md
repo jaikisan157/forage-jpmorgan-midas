@@ -209,8 +209,32 @@ Wilbur's balance after processing all transactions:
 
 ---
 
-## 🔲 Task 5 — Full End-to-End Flow
-### Status: NOT STARTED
+## ✅ Task 5 — Full End-to-End Flow & REST Controller
+### Status: COMPLETE ✅
 
-**Goal:** Complete the full pipeline — Kafka → DB → API → balance update with incentives.
+**Goal:** Complete the full pipeline — Kafka → DB → API → balance update with incentives, and expose a GET `/balance` REST API endpoint on port `33400`.
+
+### 🔧 What We Did
+- Created a REST controller [BalanceController.java](file:///c:/Users/jaikisan/Downloads/forage-jpmorgan-midas/src/main/java/com/jpmc/midascore/controller/BalanceController.java) mapping to GET `/balance` and retrieving user balances via `DatabaseConduit`.
+- Configured the application port to `33400` in `application.yml`.
+- Ran `TaskFiveTests` verifying that GET `/balance` works correctly, and produced the required output snippet.
+
+### 📊 Verification Results (TaskFiveTests Output)
+```
+---begin output ---
+Balance {amount=0.0}
+Balance {amount=1326.98}
+Balance {amount=2567.52}
+Balance {amount=2740.33}
+Balance {amount=140.96999}
+Balance {amount=10.419973}
+Balance {amount=845.49005}
+Balance {amount=657.49}
+Balance {amount=99.189995}
+Balance {amount=3434.0002}
+Balance {amount=2157.1902}
+Balance {amount=779421.3}
+Balance {amount=0.0}
+---end output ---
+```
 
