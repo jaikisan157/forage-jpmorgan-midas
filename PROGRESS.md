@@ -118,7 +118,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 general:
-  kafka-topic: transactions        # ← This was the missing property!
+  kafka-topic: trader-updates        # ← This was the missing property!
 
 server:
   port: 8080
