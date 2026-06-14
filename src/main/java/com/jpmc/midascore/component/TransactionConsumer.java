@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionConsumer {
     private static final Logger logger = LoggerFactory.getLogger(TransactionConsumer.class);
     private final DatabaseConduit databaseConduit;
+    private final IncentiveService incentiveService;
 
-    public TransactionConsumer(DatabaseConduit databaseConduit) {
+    public TransactionConsumer(DatabaseConduit databaseConduit, IncentiveService incentiveService) {
         this.databaseConduit = databaseConduit;
+        this.incentiveService = incentiveService;
     }
 
     @KafkaListener(topics = "${general.kafka-topic}")
@@ -42,14 +44,17 @@ public class TransactionConsumer {
             return;
         }
 
+        // Call the external incentive API
+        float incentiveAmount = incentiveService.getIncentiveAmount(transaction);
+
         // Process valid transaction
         sender.setBalance(sender.getBalance() - transaction.getAmount());
-        recipient.setBalance(recipient.getBalance() + transaction.getAmount());
+        recipient.setBalance(recipient.getBalance() + transaction.getAmount() + incentiveAmount);
 
         databaseConduit.save(sender);
         databaseConduit.save(recipient);
 
-        TransactionRecord record = new TransactionRecord(sender, recipient, transaction.getAmount());
+        TransactionRecord record = new TransactionRecord(sender, recipient, transaction.getAmount(), incentiveAmount);
         databaseConduit.saveTransaction(record);
 
         logger.info("Transaction processed and recorded: {}", record);

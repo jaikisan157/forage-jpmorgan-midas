@@ -190,10 +190,22 @@ Waldorf's balance after processing all transactions:
 
 ---
 
-## 🔲 Task 4 — External API Integration
-### Status: NOT STARTED
+## ✅ Task 4 — External API Integration & Incentives
+### Status: COMPLETE ✅
 
-**Goal:** Integrate the Spring app with an external REST API (the `transaction-incentive-api.jar` in the `/services` folder).
+**Goal:** Integrate Midas Core with the external Incentive API to receive and persist incentive amounts for transactions, updating recipient balances without deducting from senders.
+
+### 🔧 What We Did
+- Created [Incentive.java](file:///c:/Users/jaikisan/Downloads/forage-jpmorgan-midas/src/main/java/com/jpmc/midascore/foundation/Incentive.java) to model the REST API's response containing the incentive `amount`.
+- Created [IncentiveService.java](file:///c:/Users/jaikisan/Downloads/forage-jpmorgan-midas/src/main/java/com/jpmc/midascore/component/IncentiveService.java) utilizing Spring's `RestTemplate` to post serialized `Transaction` payloads to the `/incentive` endpoint.
+- Modified [TransactionRecord.java](file:///c:/Users/jaikisan/Downloads/forage-jpmorgan-midas/src/main/java/com/jpmc/midascore/entity/TransactionRecord.java) entity to include a new `incentive` column and updated its persistence constructors.
+- Updated [TransactionConsumer.java](file:///c:/Users/jaikisan/Downloads/forage-jpmorgan-midas/src/main/java/com/jpmc/midascore/component/TransactionConsumer.java) to invoke `IncentiveService`, add the returned incentive to the recipient's balance (not deducting from the sender), and save the transaction record with the incentive amount.
+- Ran the external API locally and ran `TaskFourTests`.
+
+### 📊 Verification Results (Wilbur Balance)
+Wilbur's balance after processing all transactions:
+- **Actual:** `3089.42`
+- **Submission (Rounded Down):** **`3089`**
 
 ---
 
@@ -201,3 +213,4 @@ Waldorf's balance after processing all transactions:
 ### Status: NOT STARTED
 
 **Goal:** Complete the full pipeline — Kafka → DB → API → balance update with incentives.
+
